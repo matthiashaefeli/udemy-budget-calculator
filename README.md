@@ -1,4 +1,6 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# React app budget calculator
+
+This project was created with the udemy course React Tutorial and Projects Course.
 
 ## Available Scripts
 
