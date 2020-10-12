@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import Alert from './components/Alert'
 import Form from './components/Form'
@@ -12,11 +12,23 @@ const initalExpenses = [
 ]
 
 function App() {
+  const [expenses, setExpenses] = useState(initalExpenses)
+
   return (
     <>
       <Alert />
-      <Form />
-      <List />
+      <h1>budget calculator</h1>
+      <main className='App'>
+        <Form />
+        <List expenses={expenses} />
+      </main>
+      <h1>total spending:
+        <span className='total'>
+          $ {expenses.reduce((acc, curr) => {
+            return acc += curr.amount
+          }, 0)}
+        </span>
+      </h1>
     </>
   );
 }
