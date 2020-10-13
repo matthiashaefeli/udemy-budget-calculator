@@ -16,6 +16,8 @@ function App() {
   const [charge, setCharge] = useState('')
   const [amount, setAmount] = useState('')
   const [alert, setAlert] = useState({show: false})
+  const [edit, setEdit] = useState(false)
+  const [id, setId] = useState(0)
 
   const handleCharge = e => {
     setCharge(e.target.value)
@@ -35,20 +37,43 @@ function App() {
   const handleSubmit = e => {
     e.preventDefault();
     if (charge !== '' && amount > 0) {
-      const singleExpense = {id: uuid(), charge, amount}
-      setExpenses([...expenses, singleExpense])
+
+      if(edit) {
+        let filteredExpenses = expenses.map(expense => {
+          return expense.id === id ? {...expense, charge, amount} : expense
+        })
+        setExpenses(filteredExpenses)
+        setEdit(false)
+        handleAlert({type: 'success', text: 'Item edited'})
+      } else {
+        const singleExpense = {id: uuid(), charge, amount}
+        setExpenses([...expenses, singleExpense])
+        handleAlert({type: 'success', text: 'Item added'})
+      }
       setCharge('')
       setAmount('')
-      handleAlert({type: 'success', text: 'Item added'})
     } else {
       handleAlert({type: 'danger', text: `charge can't be empty, amount has to be bigger than 0`})
     }
   }
 
-
-
-  const handleDelete = () => {
+  const handleClear = () => {
     setExpenses([])
+    handleAlert({type: 'success', text: 'All items deleted'})
+  }
+
+  const handleDelete = (id) => {
+    let filteredExpenses = expenses.filter(expense => expense.id !== id)
+    setExpenses(filteredExpenses)
+    handleAlert({type: 'success', text: 'Item deleted'})
+  }
+
+  const handleEdit = (id) => {
+    let expense = expenses.find(expense => expense.id === id)
+    setEdit(true)
+    setCharge(expense.charge)
+    setAmount(expense.amount)
+    setId(id)
   }
 
   return (
@@ -61,8 +86,15 @@ function App() {
           amount={amount}
           handleCharge={handleCharge}
           handleAmount={handleAmount}
-          handleSubmit={handleSubmit} />
-        <List expenses={expenses} handleDelete={handleDelete} />
+          handleSubmit={handleSubmit}
+          edit={edit}
+        />
+        <List
+          expenses={expenses}
+          handleClear={handleClear}
+          handleDelete={handleDelete}
+          handleEdit={handleEdit}
+        />
       </main>
       <h1>total spending:
         <span className='total'>
