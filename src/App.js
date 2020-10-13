@@ -14,13 +14,17 @@ const initalExpenses = [
 function App() {
   const [expenses, setExpenses] = useState(initalExpenses)
 
+  const handleDelete = () => {
+    setExpenses([])
+  }
+
   return (
     <>
       <Alert />
       <h1>budget calculator</h1>
       <main className='App'>
         <Form />
-        <List expenses={expenses} />
+        <List expenses={expenses} handleDelete={handleDelete} />
       </main>
       <h1>total spending:
         <span className='total'>
