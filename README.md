@@ -1,6 +1,7 @@
 # React app budget calculator
 
 This project was created with the udemy course React Tutorial and Projects Course.
+Budget calculator
 
 ## Available Scripts
 
